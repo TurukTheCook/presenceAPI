@@ -95,9 +95,41 @@ class ApprenantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        //
+        $apprenant = Apprenant::find($id);
+        $first_name = $request['prenom'];
+        $last_name = $request['nom'];
+        $avatar_uri = $request['avatar'];
+        $sign_uri = $request['sign'];
+
+        $time = time();
+        
+        if ($avatar_uri != null){
+            $avatar_base64 = substr($avatar_uri, strpos($avatar_uri, ",")+1);
+            $avatar_store_url = public_path().'/img/avatar/'.$first_name.'.'.$last_name.'.'.$time.'.png';
+            $avatar_url = '/img/avatar/'.$first_name.'.'.$last_name.'.'.$time.'.png';
+            Image::make($avatar_base64)->fit(100,100)->save($avatar_store_url);
+        } else {
+            $avatar_url = $apprenant->avatar;
+        }
+        
+        if ($sign_uri != null){
+            $sign_base64 = substr($sign_uri, strpos($sign_uri, ",")+1);
+            $sign_store_url = public_path().'/img/sign/'.$first_name.'.'.$last_name.'.'.$time.'.png';
+            $sign_url = '/img/sign/'.$first_name.'.'.$last_name.'.'.$time.'.png';
+            Image::make($sign_base64)->fit(400,200)->save($sign_store_url);
+        } else {
+            $sign_url = $apprenant->sign;
+        }
+        
+        $apprenant->first_name = $first_name;
+        $apprenant->last_name = $last_name;
+        $apprenant->avatar = $avatar_url;
+        $apprenant->sign = $sign_url;
+        $apprenant->save();
+        
+        return response()->json(['success' => true, 'message' => 'Apprenant mis à jour !']);
     }
 
     /**
