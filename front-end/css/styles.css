@@ -1,0 +1,135 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0
+}
+
+html, body {
+  font-family: Roboto, sans-serif
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.z-depth-1 {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15)
+}
+
+.z-depth-2 {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15)
+}
+
+.padd-10 {
+  padding: 10px
+}
+
+.sign-pad,
+.sign-buttons {
+  margin: 0 auto
+}
+
+.sign-buttons {
+  width: 450px
+}
+
+.sign-pad {
+  border: 1px solid #ddd
+}
+
+.new-app {
+  position: relative;
+  padding-bottom: 45px;
+  margin-left: 10px;
+  margin-right: 10px
+}
+
+.new-app_header {
+  padding: 10px;
+  cursor: default
+}
+
+.btn_add-app,
+.btn_upd-app {
+  position: absolute;
+  bottom: -20px;
+  right: 15px
+}
+
+.btn_del-app {
+  position: absolute;
+  bottom: -20px;
+  left: 15px
+}
+
+.list-app-mod {
+  display: flex;
+  flex-wrap: wrap
+}
+
+.app-mod {
+  height: 100px;
+  width: calc(50% - 20px);
+  display: flex;
+  margin: 10px
+}
+
+.app-mod:hover {
+  background-color: rgb(240, 240, 240);
+  cursor: pointer;
+}
+
+.app-mod_avatar {
+  width: 100px
+}
+
+.app-mod_name {
+  width: calc(65% - 50px);
+  word-wrap: break-word;
+  overflow: hidden;
+  text-align: center
+}
+
+.app-mod_sign {
+  width: calc(35% - 50px);
+  height: 100%
+}
+
+.app-mod_sign img {
+  width: 100%;
+  height: 100%
+}
+
+.app-mod_buttons {
+  width: calc(25% - 33px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center
+}
+
+.app-mod_buttons button {
+  width: 90%;
+  margin-bottom: 5px
+}
+
+.app-profile {
+  margin: 30px auto;
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+
+@media all and (max-width: 995px) {
+  .app-mod {
+    width: calc(100% - 20px)
+  }
+}

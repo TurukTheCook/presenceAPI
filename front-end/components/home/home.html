@@ -1,0 +1,71 @@
+<!-- ### FORM NOUVEL APPRENANT ### -->
+<div class="container mb-5">
+  <div class="new-app z-depth-2">
+    <div class="new-app_header text-white bg-dark mb-2 pl-3">
+      <h2>Nouvel Apprenant</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <form class="padd-10">
+          <div class="form-group">
+            <label for="prenom" class="mr-1">Prénom</label>
+            <input ng-model="prenom" type="text" class="form-control" id="prenom" placeholder="Prénom">
+          </div>
+          <div class="form-group">
+            <label for="nom">Nom</label>
+            <input ng-model="nom" type="text" class="form-control" id="nom" placeholder="Nom">
+          </div>
+          <!-- <div class="form-group">
+              <label for="formation">Formation</label>
+              <input type="text" class="form-control" id="formation" placeholder="Formation">
+            </div>
+            <div class="form-group">
+              <label for="lieu">Lieu</label>
+              <input type="text" class="form-control" id="lieu" placeholder="Lieu">
+            </div> -->
+          <div class="form-group">
+            <label for="avatar">Avatar</label>
+            <input ng-model="avatar" type="file" accept="image/*" maxsize="2000" class="form-control-file" id="avatar" base-sixty-four-input>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-6">
+        <div class="padd-10">
+          <label class="sign-label ml-5 mb-2">Signature</label>
+          <signature-pad class="sign-pad mb-3" accept="accept" clear="clear" height="230" width="450" disabled="false"></signature-pad>
+          <div class="sign-buttons">
+            <button class="btn btn-danger" ng-click="clear()">Reset signature</button>
+            <button class="btn btn-dark ml-2" ng-click="signature = accept()">Accepter Signature</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-lg btn-primary btn_add-app" ng-click="addNewApp()">Ajouter Apprenant</button>
+  </div>
+</div>
+<!-- ### FIN FORM NOUVEL APPRENANT ### -->
+
+<!-- ### LISTE APPRENANTS MODIFIABLE ###-->
+<div class="container mb-3">
+  <div class="list-app-mod no-gutters">
+    <div ng-repeat="apprenant in apprenants" class="app-mod z-depth-2">
+      <div ng-click="showApp(apprenant.id)" style="display:flex">
+        <div class="app-mod_avatar">
+          <img class="img-fluid" ng-src="http://localhost:8000{{apprenant.avatar}}" />
+        </div>
+        <div class="app-mod_name pt-2">
+          <h4>{{apprenant.first_name}}</h4>
+          <h4>{{apprenant.last_name}}</h4>
+        </div>
+        <div class="app-mod_sign">
+          <img ng-src="http://localhost:8000{{apprenant.sign}}" :>
+        </div>
+        <!-- <div class="app-mod_buttons">
+            <button class="btn btn-dark">Edit</button>
+            <button class="btn btn-danger" ng-click="deleteApp(apprenant.id)">Delete</button>
+          </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ### FIN LISTE APPRENANTS MODIFIABLE ###-->

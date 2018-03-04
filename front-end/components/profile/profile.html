@@ -1,0 +1,23 @@
+<div class="container pb-3">
+  <div class="flex-center">
+    <div class="app-profile z-depth-2">
+      <div class="new-app-header text-white bg-dark">
+        <h2 class="padd-10">Edit Profile</h2>
+      </div>
+      <form class="padd-10">
+        <div class="form-group">Prénom: <input class="form-control" type="text" value="{{apprenant.first_name}}"></div>
+        <div class="form-group">Nom: <input class="form-control" type="text" value="{{apprenant.last_name}}"></div>
+        <div class="form-group">Avatar: <input ng-model="avatar" type="file" accept="image/*" maxsize="2000" class="form-control-file" base-sixty-four-input></div>
+        <div class="form-group">Sign:
+          <signature-pad class="sign-pad mb-3" accept="accept" clear="clear" height="230" width="450" disabled="false"></signature-pad>
+          <div class="sign-buttons">
+            <button class="btn btn-danger" ng-click="clear()">Reset signature</button>
+            <button class="btn btn-dark ml-2" ng-click="signature = accept()">Accepter Signature</button>
+          </div>
+        </div>
+        <button class="btn btn-lg btn-primary btn_del-app" ng-click="deleteApp(apprenant.id)">Supprimer Apprenant</button>
+        <button class="btn btn-lg btn-primary btn_upd-app" ng-click="updateApp()">Editer Apprenant</button>
+      </form>
+    </div>
+  </div>
+</div>
