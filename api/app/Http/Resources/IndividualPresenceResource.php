@@ -20,6 +20,8 @@ class IndividualPresenceResource extends JsonResource
             'presence_id' => $this->presence_id,
             'absent_matin' => $this->absent_matin,
             'absent_aprem' => $this->absent_aprem,
+            'sign_matin' => $this->sign_matin,
+            'sign_aprem' =>$this->sign_aprem,
         ];
     }
 }

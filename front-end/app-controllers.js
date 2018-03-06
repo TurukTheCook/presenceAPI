@@ -115,6 +115,14 @@ app.controller('listingController', function($scope, AppService){
   $scope.displayPresence = _displayPresence;
   $scope.updatePresenceMatin = _updatePresenceMatin;
   $scope.updatePresenceAprem = _updatePresenceAprem;
+  $scope.openModalMatin = _openModalMatin;
+  $scope.openModalAprem = _openModalAprem;
+  $scope.PresentMatin = _PresentMatin;
+  $scope.PresentAprem = _PresentAprem;
+  $scope.AbsentMatin = _AbsentMatin;
+  $scope.AbsentAprem = _AbsentAprem;
+  $scope.modalId = null;
+
 
   $scope.formations = [
    'Formation Web Developpement'
@@ -172,6 +180,8 @@ app.controller('listingController', function($scope, AppService){
                   else $scope.apprenants[position].absentMatin = true;
                   if(value.absent_aprem == 0) $scope.apprenants[position].absentAprem = false;
                   else $scope.apprenants[position].absentAprem = true;
+                  _updatePresenceMatin($scope.apprenants[position].id, null);
+                  _updatePresenceAprem($scope.apprenants[position].id, null);
                 });
               },
               function(res){
@@ -185,7 +195,7 @@ app.controller('listingController', function($scope, AppService){
       );
   }
 
-  function _updatePresenceMatin(id) {
+  function _updatePresenceMatin(id, signatureUrl) {
     let _position = _findApprenantId(id);
     let absent = 1;
 
@@ -195,12 +205,13 @@ app.controller('listingController', function($scope, AppService){
     let _data = {
       'absent': absent,
       'type': 'matin',
-      'presence_id': presence_id
+      'presence_id': presence_id,
+      'sign': signatureUrl,
     };
     AppService.updateIndividualPresence(_data, id)
       .then(
         function(res){
-          console.log(res.data);
+          $scope.apprenants[_position].sign_matin = res.data.sign_matin;
         },
         function(res){
           alert('Something went wrong...');
@@ -208,8 +219,68 @@ app.controller('listingController', function($scope, AppService){
       );
   }
 
-  function _updatePresenceAprem(id) {
-    //
+  function _updatePresenceAprem(id, signatureUrl) {
+    let _position = _findApprenantId(id);
+    let absent = 1;
+
+    if($scope.apprenants[_position].absentAprem == true) absent = 1;
+    else absent = 0;
+
+    let _data = {
+      'absent': absent,
+      'type': 'aprem',
+      'presence_id': presence_id,
+      'sign': signatureUrl,
+      'first_name': $scope.apprenants[_position].first_name,
+      'last_name': $scope.apprenants[_position].last_name,
+    };
+    AppService.updateIndividualPresence(_data, id)
+      .then(
+        function(res){
+          $scope.apprenants[_position].sign_aprem = res.data.sign_aprem;
+        },
+        function(res){
+          alert('Something went wrong...');
+        }
+      );
+  }
+
+  function _PresentMatin(id) {
+    let _position = _findApprenantId(id);
+    $scope.apprenants[_position].absentMatin = false;
+    $('#signModalMatin').modal('hide');
+  }
+
+  function _PresentAprem(id) {
+    let _position = _findApprenantId(id);
+    $scope.apprenants[_position].absentAprem = false;
+    $('#signModalAprem').modal('hide');
+  }
+
+  function _AbsentMatin(id) {
+    let _position = _findApprenantId(id);
+    $scope.apprenants[_position].absentMatin = true;
+    $('#signModalMatin').modal('hide');
+  }
+
+  function _AbsentAprem(id) {
+    let _position = _findApprenantId(id);
+    $scope.apprenants[_position].absentAprem = true;
+    $('#signModalAprem').modal('hide');
+  }
+
+  function _openModalMatin(id){
+    $('#signModalMatin').modal();
+    $('#signModalMatin').on('shown.bs.modal', function (e) {
+      $scope.modalId = id;
+    });
+  }
+
+  function _openModalAprem(id){
+    $('#signModalAprem').modal();
+    $('#signModalAprem').on('shown.bs.modal', function (e) {
+      $scope.modalId = id;
+    });
   }
 
 });

@@ -39,6 +39,11 @@ html, body {
   border: 1px solid #ddd
 }
 
+.sign-pad_modal {
+  height: 230px !important;
+  width: 450px !important;
+}
+
 .new-app {
   position: relative;
   padding-bottom: 45px;
@@ -121,6 +126,7 @@ html, body {
 
 .app_matin,
 .app_aprem {
+  min-width: calc(25% - 25px);
   width: calc(25% - 25px);
   height: 100%
 }

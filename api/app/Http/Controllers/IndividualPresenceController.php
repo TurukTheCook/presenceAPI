@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\IndividualPresence;
 use App\Http\Resources\IndividualPresenceResource;
+use Image;
 
 class IndividualPresenceController extends Controller
 {
@@ -90,16 +91,40 @@ class IndividualPresenceController extends Controller
         
         $type = $request['type'];
         $absent = $request['absent'];
+        $first_name = $request['first_name'];
+        $last_name = $request['last_name'];
+
+        $sign_uri = $request['sign'];
+
+        $time = time();
 
         if($type == 'matin') {
+            if ($sign_uri != null){
+                $sign_base64 = substr($sign_uri, strpos($sign_uri, ",")+1);
+                $sign_store_url = public_path().'/img/sign/presence/'.$first_name.'.'.$last_name.'.matin.'.$time.'.png';
+                $sign_matin_url = '/img/sign/presence/'.$first_name.'.'.$last_name.'.matin.'.$time.'.png';
+                Image::make($sign_base64)->fit(200,100)->save($sign_store_url);
+            } else {
+                $sign_matin_url = $apprenant_presence->sign_matin;
+            }
+            $apprenant_presence->sign_matin = $sign_matin_url;
             $apprenant_presence->absent_matin = $absent;
             $apprenant_presence->save();
-            return response()->json(['success' => true, 'message' => 'Présence du matin mise à jour !']);
+            return new IndividualPresenceResource(IndividualPresence::find($apprenant_presence->id));
         }
         else {
+            if ($sign_uri != null){
+                $sign_base64 = substr($sign_uri, strpos($sign_uri, ",")+1);
+                $sign_store_url = public_path().'/img/sign/presence/'.$first_name.'.'.$last_name.'.aprem.'.$time.'.png';
+                $sign_aprem_url = '/img/sign/presence/'.$first_name.'.'.$last_name.'.aprem.'.$time.'.png';
+                Image::make($sign_base64)->fit(200,100)->save($sign_store_url);
+            } else {
+                $sign_aprem_url = $apprenant_presence->sign_aprem;
+            }
+            $apprenant_presence->sign_aprem = $sign_aprem_url;
             $apprenant_presence->absent_aprem = $absent;
             $apprenant_presence->save();
-            return response()->json(['success' => true, 'message' => "Présence de l'aprem mise à jour !"]);
+            return new IndividualPresenceResource(IndividualPresence::find($apprenant_presence->id));
         }
     }
 

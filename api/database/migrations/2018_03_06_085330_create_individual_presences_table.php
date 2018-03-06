@@ -19,6 +19,8 @@ class CreateIndividualPresencesTable extends Migration
             $table->integer('presence_id')->unsigned();
             $table->boolean('absent_matin')->default(true);
             $table->boolean('absent_aprem')->default(true);
+            $table->string('sign_matin')->nullable();
+            $table->string('sign_aprem')->nullable();
             $table->timestamps();
 
             $table->foreign('apprenant_id')->references('id')->on('apprenants');

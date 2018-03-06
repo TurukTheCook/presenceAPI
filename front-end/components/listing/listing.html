@@ -43,7 +43,7 @@
 <div class="container mb-3">
   <div class="app-list no-gutters">
     <div ng-repeat="apprenant in apprenants" class="app z-depth-2">
-      <div class="d-flex">
+      <div class="d-flex" ng-click="openModal()">
         <div class="app_avatar d-flex">
           <img class="img-fluid" ng-src="http://localhost:8000{{apprenant.avatar}}" />
         </div>
@@ -51,12 +51,59 @@
           <p><strong>{{apprenant.first_name}}</strong></p>
           <p><strong>{{apprenant.last_name}}</strong></p>
         </div>
-        <div class="app_matin d-flex" ng-class="{ absent : apprenant.absentMatin, present: !apprenant.absentMatin }" ng-click="apprenant.absentMatin = !apprenant.absentMatin; updatePresenceMatin(apprenant.id)">
-          <img ng-src="http://localhost:8000{{apprenant.sign}}" />
+        <div class="app_matin d-flex" style="border-right: 1px solid #000" ng-class="{ absent : apprenant.absentMatin, present: !apprenant.absentMatin }" ng-click="openModalMatin(apprenant.id)">
+          <img ng-if="!apprenant.sign_matin" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAQAAABpj7eAAAAAoElEQVR42u3RAQ0AAAzCsOPf9G0Q0klYc6oqFgARECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAEBIiACAkRAgAjIeg+EzwBluELcMgAAAABJRU5ErkJggg==" />
+          <img ng-if="apprenant.sign_matin" ng-src="http://localhost:8000{{apprenant.sign_matin}}" />
         </div>
-        <div class="app_aprem d-flex" ng-class="{ absent : apprenant.absentAprem, present: !apprenant.absentAprem }" ng-click="apprenant.absentAprem = !apprenant.absentAprem; updatePresenceAprem(apprenant.id)">
-          <img ng-src="http://localhost:8000{{apprenant.sign}}" />
+        <div class="app_aprem d-flex" ng-class="{ absent : apprenant.absentAprem, present: !apprenant.absentAprem }" ng-click="openModalAprem(apprenant.id)">
+          <img ng-if="!apprenant.sign_aprem" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAQAAABpj7eAAAAAoElEQVR42u3RAQ0AAAzCsOPf9G0Q0klYc6oqFgARECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAERECACAkRAgAgIEAEBIiACAkRAgAjIeg+EzwBluELcMgAAAABJRU5ErkJggg==" />
+          <img ng-if="apprenant.sign_aprem" ng-src="http://localhost:8000{{apprenant.sign_aprem}}" />
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="signModalMatin" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Présence Matinée</h5>
+              </div>
+              <div class="modal-body">
+                <label class="sign-label ml-5 mb-2">Signature</label>
+                <signature-pad class="sign-pad sign-pad_modal mb-3" accept="acceptMatin" clear="clearMatin" height="230" width="450" disabled="false"></signature-pad>
+                <div class="sign-buttons">
+                  <button class="btn btn-danger" ng-click="clearMatin()">Reset signature</button>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" ng-click="AbsentMatin(modalId); updatePresenceMatin(modalId)">Absent</button>
+                <button type="button" class="btn btn-success" ng-click="signature = acceptMatin(); PresentMatin(modalId); updatePresenceMatin(modalId, signature.dataUrl)">Valider</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Fin Modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="signModalAprem" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Présence Après-midi</h5>
+              </div>
+              <div class="modal-body">
+                <label class="sign-label ml-5 mb-2">Signature</label>
+                <signature-pad class="sign-pad sign-pad_modal mb-3" accept="acceptAprem" clear="clearAprem" height="230" width="450" disabled="false"></signature-pad>
+                <div class="sign-buttons">
+                  <button class="btn btn-danger" ng-click="clearAprem()">Reset signature</button>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" ng-click="AbsentAprem(modalId); updatePresenceAprem(modalId)">Absent</button>
+                <button type="button" class="btn btn-success" ng-click="signature = acceptAprem(); PresentAprem(modalId); updatePresenceAprem(modalId, signature.dataUrl)">Valider</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Fin Modal -->
       </div>
     </div>
   </div>
