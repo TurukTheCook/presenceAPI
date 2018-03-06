@@ -1,7 +1,7 @@
 <!-- ### FORM NOUVEL APPRENANT ### -->
 <div class="container mb-5">
   <div class="new-app z-depth-2">
-    <div class="new-app_header text-white bg-dark mb-2 pl-3">
+    <div class="new-app_header text-white bg-dark text-center mb-2">
       <h2>Nouvel Apprenant</h2>
     </div>
     <div class="row">
@@ -47,23 +47,19 @@
 
 <!-- ### LISTE APPRENANTS MODIFIABLE ###-->
 <div class="container mb-3">
-  <div class="list-app-mod no-gutters">
+  <div class="app-list-mod no-gutters">
     <div ng-repeat="apprenant in apprenants" class="app-mod z-depth-2">
-      <div ng-click="showApp(apprenant.id)" style="display:flex">
+      <div ng-click="showApp(apprenant.id)" class="d-flex">
         <div class="app-mod_avatar">
           <img class="img-fluid" ng-src="http://localhost:8000{{apprenant.avatar}}" />
         </div>
-        <div class="app-mod_name pt-2">
-          <h4>{{apprenant.first_name}}</h4>
-          <h4>{{apprenant.last_name}}</h4>
+        <div class="app-mod_name d-flex flex-column justify-content-center">
+          <p>{{apprenant.first_name}}</p>
+          <p>{{apprenant.last_name}}</p>
         </div>
         <div class="app-mod_sign">
-          <img ng-src="http://localhost:8000{{apprenant.sign}}" :>
+          <img ng-src="http://localhost:8000{{apprenant.sign}}" />
         </div>
-        <!-- <div class="app-mod_buttons">
-            <button class="btn btn-dark">Edit</button>
-            <button class="btn btn-danger" ng-click="deleteApp(apprenant.id)">Delete</button>
-          </div> -->
       </div>
     </div>
   </div>

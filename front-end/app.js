@@ -20,7 +20,7 @@ app.config(function($stateProvider, $urlRouterProvider){
   var listing = {
     name: 'listing',
     url: '/listing',
-    template: 'listing'
+    component: 'listing'
   };
 
   $stateProvider.state(home);

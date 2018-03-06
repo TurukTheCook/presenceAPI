@@ -1,0 +1,64 @@
+<div class="container mb-3">
+  <div class="new-app z-depth-2 d-flex flex-column pb-0">
+    <div class="new-app_header text-white bg-dark text-center">
+      <h2>Feuille de Présence</h2>
+    </div>
+    <form class="padd-10">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group mb-0">
+            <label>Intitulé de la formation: </label>
+            <select
+              ng-model="select.formation"
+              ng-options="formation for formation in formations"
+              style="width: 150px">
+              <option value="">Select...</option>
+            </select>
+          </div>
+          <div class="form-group mb-0">
+            <label>Lieu de la formation: </label>
+            <select
+              ng-model="select.lieu"
+              ng-options="lieu for lieu in lieux"
+              style="width: 150px">
+              <option value="">Select...</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group mb-0">
+            <label>Date: </label>
+            <input type="date" ng-model="select.date">
+          </div>
+          <div class="form-group mb-0">
+            <label>Durée:<br>1 jour (7h) </label>
+          </div>
+        </div>
+      </div>
+    </form>
+    <button class="btn btn-lg btn-primary btn_add-app" ng-click="displayPresence()">Afficher</button>
+  </div>
+</div>
+<!-- ### LISTE APPRENANTS ###-->
+<div class="container mb-3">
+  <div class="app-list no-gutters">
+    <div ng-repeat="apprenant in apprenants" class="app z-depth-2">
+      <div class="d-flex">
+        <div class="app_avatar d-flex">
+          <img class="img-fluid" ng-src="http://localhost:8000{{apprenant.avatar}}" />
+        </div>
+        <div class="app_name d-flex flex-column justify-content-center">
+          <p><strong>{{apprenant.first_name}}</strong></p>
+          <p><strong>{{apprenant.last_name}}</strong></p>
+        </div>
+        <div class="app_matin d-flex" ng-class="{ absent : apprenant.absentMatin, present: !apprenant.absentMatin }" ng-click="apprenant.absentMatin = !apprenant.absentMatin; updatePresenceMatin(apprenant.id)">
+          <img ng-src="http://localhost:8000{{apprenant.sign}}" />
+        </div>
+        <div class="app_aprem d-flex" ng-class="{ absent : apprenant.absentAprem, present: !apprenant.absentAprem }" ng-click="apprenant.absentAprem = !apprenant.absentAprem; updatePresenceAprem(apprenant.id)">
+          <img ng-src="http://localhost:8000{{apprenant.sign}}" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ### FIN LISTE APPRENANTS MODIFIABLE ###-->

@@ -17,8 +17,11 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-// Route::post('new_app', 'ApprenantController@store');
-// Route::get('list_app_mod', 'ApprenantController@index');
-// Route::get('app_mod', 'ApprenantController@show');
-
+// INSCRIPTION LIST
 Route::apiResource('app_register', 'ApprenantController');
+
+// PRESENCE LIST ROUTES
+Route::apiResource('presence_list', 'PresenceController');
+
+// INDIVIDUAL PRESENCE ROUTES
+Route::apiResource('individual_presence', 'IndividualPresenceController');

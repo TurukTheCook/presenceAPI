@@ -28,7 +28,7 @@ app.controller('homeController', function($scope, $state, AppService){
   }
 
   function _updateListMod() {
-    AppService.updateListMod()
+    AppService.updateAppList()
       .then(
         function (res) {
           $scope.apprenants = res.data;
@@ -99,7 +99,6 @@ app.controller('profileController', function($scope, $state, $stateParams, AppSe
     AppService.updateApp(data, id)
       .then(
         function(res){
-          console.log(res.data);
           $state.go('home');
         },
         function(res){
@@ -107,4 +106,110 @@ app.controller('profileController', function($scope, $state, $stateParams, AppSe
         }
       );
   }
+});
+
+app.controller('listingController', function($scope, AppService){
+  $scope.apprenants = [];
+  $scope.presence_id = null;
+  $scope.select = {};
+  $scope.displayPresence = _displayPresence;
+  $scope.updatePresenceMatin = _updatePresenceMatin;
+  $scope.updatePresenceAprem = _updatePresenceAprem;
+
+  $scope.formations = [
+   'Formation Web Developpement'
+  ];
+  $scope.lieux = [
+    'ICAM - Carré Sénart, 34 Points de Vue, 77127 Lieusaint'
+  ];
+
+  function _updateList() {
+    AppService.updateAppList()
+      .then(
+        function (res) {
+          $scope.apprenants = res.data;
+        }
+      );
+  }
+
+  function _findApprenantId(id) {
+    let apprenant = $scope.apprenants.findIndex(function(element) {
+      return element.id == id;
+    });
+  
+    return apprenant;
+  }
+
+  function _displayPresence(){
+    _updateList();
+
+    let data = {
+      'formation' : $scope.select.formation,
+      'lieu' : $scope.select.lieu,
+      'date' : $scope.select.date.toLocaleDateString(),
+    };
+
+    let apprenants = [];
+    angular.forEach($scope.apprenants, function(value, key) {
+      this.push(value.id);
+    }, apprenants);
+    
+    AppService.displayPresenceList(data)
+      .then(
+        function(res){
+          presence_id = res.data.id;
+          let _data = {
+            'presence_id': presence_id,
+            'apprenants': apprenants
+          };
+          AppService.getIndividualPresence(_data)
+            .then(
+              function(res){
+                let new_apps = res.data;
+                angular.forEach(new_apps, function(value, key) {
+                  let position = _findApprenantId(value.apprenant_id);
+                  if(value.absent_matin == 0) $scope.apprenants[position].absentMatin = false;
+                  else $scope.apprenants[position].absentMatin = true;
+                  if(value.absent_aprem == 0) $scope.apprenants[position].absentAprem = false;
+                  else $scope.apprenants[position].absentAprem = true;
+                });
+              },
+              function(res){
+                alert('Something went wrong..');
+              }
+            );
+        },
+        function(res){
+          alert('Something went wrong..');
+        }
+      );
+  }
+
+  function _updatePresenceMatin(id) {
+    let _position = _findApprenantId(id);
+    let absent = 1;
+
+    if($scope.apprenants[_position].absentMatin == true) absent = 1;
+    else absent = 0;
+
+    let _data = {
+      'absent': absent,
+      'type': 'matin',
+      'presence_id': presence_id
+    };
+    AppService.updateIndividualPresence(_data, id)
+      .then(
+        function(res){
+          console.log(res.data);
+        },
+        function(res){
+          alert('Something went wrong...');
+        }
+      );
+  }
+
+  function _updatePresenceAprem(id) {
+    //
+  }
+
 });
